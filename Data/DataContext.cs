@@ -10,6 +10,8 @@ namespace WebAPI.Data
 
         }
         public DbSet<City> Cities { get; set; }
+
+        public DbSet<Property> Properties { get; set; }
     }
 
 }
