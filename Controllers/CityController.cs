@@ -41,10 +41,5 @@ namespace WebAPI.Controllers
         {
             return "Atalnta";
         }
-
-        public IActionResult Index()
-        {
-            return View();
-        }
     }
 }
