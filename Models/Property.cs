@@ -4,6 +4,7 @@ namespace WebAPI.Models
 {
     public class Property
     {
+        [Key]
         public int Id { get; set; }
 
         public int SellRent { get; set; }
@@ -31,7 +32,7 @@ namespace WebAPI.Models
 
         public int CityId { get; set; }
 
-        public City City { get; set; }
+        public virtual City City { get; set; } = null;
 
         public int FloorNo { get; set; }
 
