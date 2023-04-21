@@ -611,3 +611,4 @@ C:\Harshleen\2ndSem\Comp584\4-20\backend\latest\COMP584-Assignment1-server\obj\D
 C:\Harshleen\2ndSem\Comp584\4-20\backend\latest\COMP584-Assignment1-server\obj\Debug\net7.0\WebAPI.pdb
 C:\Harshleen\2ndSem\Comp584\4-20\backend\latest\COMP584-Assignment1-server\obj\Debug\net7.0\WebAPI.genruntimeconfig.cache
 C:\Harshleen\2ndSem\Comp584\4-20\backend\latest\COMP584-Assignment1-server\obj\Debug\net7.0\ref\WebAPI.dll
+C:\Harshleen\2ndSem\Comp584\4-20\backend\latest\COMP584-Assignment1-server\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
