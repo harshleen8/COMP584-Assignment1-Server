@@ -50,10 +50,12 @@ namespace WebAPI.Controllers
 
             var token = GetToken(authClaims);
 
-            return Ok(new
-            {
-                token = new JwtSecurityTokenHandler().WriteToken(token),
-                expiration = token.ValidTo
+            return Ok(
+                new LoginResult
+                {
+                    Success = true,
+                    Message = "Login successful",
+                    Token = new JwtSecurityTokenHandler().WriteToken(token)
             });
             return Unauthorized();
         }
