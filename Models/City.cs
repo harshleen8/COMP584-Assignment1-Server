@@ -11,7 +11,7 @@ namespace WebAPI.Models
         [StringLength(50)]
         public string? Name { get; set; }
 
-        public string Country { get; set; }
+        //public string Country { get; set; }
 
         public virtual ICollection<Property> Properties { get; set; }
     }

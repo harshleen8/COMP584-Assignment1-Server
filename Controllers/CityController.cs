@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebAPI.Data;
 using WebAPI.Models;
@@ -19,6 +20,7 @@ namespace WebAPI.Controllers
 
         //GET method: api/city
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetCities()
         {
             var cities = await dc.Cities.ToListAsync();
@@ -34,12 +36,6 @@ namespace WebAPI.Controllers
             await dc.Cities.AddAsync(city);
             await dc.SaveChangesAsync();
             return Ok(city);
-        }
-
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "Atalnta";
         }
     }
 }

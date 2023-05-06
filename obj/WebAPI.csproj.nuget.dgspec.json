@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Harshleen\\2ndSem\\Comp584\\backend\\5-4\\COMP584-Assignment1-server\\WebAPI.csproj": {}
+    "C:\\Harshleen\\2ndSem\\Comp584\\backend\\5-5\\COMP584-Assignment1-server\\WebAPI.csproj": {}
   },
   "projects": {
-    "C:\\Harshleen\\2ndSem\\Comp584\\backend\\5-4\\COMP584-Assignment1-server\\WebAPI.csproj": {
+    "C:\\Harshleen\\2ndSem\\Comp584\\backend\\5-5\\COMP584-Assignment1-server\\WebAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Harshleen\\2ndSem\\Comp584\\backend\\5-4\\COMP584-Assignment1-server\\WebAPI.csproj",
+        "projectUniqueName": "C:\\Harshleen\\2ndSem\\Comp584\\backend\\5-5\\COMP584-Assignment1-server\\WebAPI.csproj",
         "projectName": "WebAPI",
-        "projectPath": "C:\\Harshleen\\2ndSem\\Comp584\\backend\\5-4\\COMP584-Assignment1-server\\WebAPI.csproj",
+        "projectPath": "C:\\Harshleen\\2ndSem\\Comp584\\backend\\5-5\\COMP584-Assignment1-server\\WebAPI.csproj",
         "packagesPath": "C:\\Users\\hs844760\\.nuget\\packages\\",
-        "outputPath": "C:\\Harshleen\\2ndSem\\Comp584\\backend\\5-4\\COMP584-Assignment1-server\\obj\\",
+        "outputPath": "C:\\Harshleen\\2ndSem\\Comp584\\backend\\5-5\\COMP584-Assignment1-server\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -45,6 +45,10 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "IdentityServer4.AccessTokenValidation": {
+              "target": "Package",
+              "version": "[3.0.1, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[7.0.5, )"
