@@ -46,6 +46,19 @@
           }
         }
       },
+      "CsvHelper/30.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/CsvHelper.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/CsvHelper.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Humanizer.Core/2.14.1": {
         "type": "package",
         "compile": {
@@ -4083,6 +4096,30 @@
         "azureicon.png",
         "lib/netstandard2.0/Azure.Identity.dll",
         "lib/netstandard2.0/Azure.Identity.xml"
+      ]
+    },
+    "CsvHelper/30.0.1": {
+      "sha512": "rcZtgbWR+As4G3Vpgx0AMNmShGuQLFjkHAPIIflzrfkJCx8/AOd4m96ZRmiU1Wi39qS5UVjV0P8qdgqOo5Cwyg==",
+      "type": "package",
+      "path": "csvhelper/30.0.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "csvhelper.30.0.1.nupkg.sha512",
+        "csvhelper.nuspec",
+        "lib/net45/CsvHelper.dll",
+        "lib/net45/CsvHelper.xml",
+        "lib/net47/CsvHelper.dll",
+        "lib/net47/CsvHelper.xml",
+        "lib/net5.0/CsvHelper.dll",
+        "lib/net5.0/CsvHelper.xml",
+        "lib/net6.0/CsvHelper.dll",
+        "lib/net6.0/CsvHelper.xml",
+        "lib/netstandard2.0/CsvHelper.dll",
+        "lib/netstandard2.0/CsvHelper.xml",
+        "lib/netstandard2.1/CsvHelper.dll",
+        "lib/netstandard2.1/CsvHelper.xml"
       ]
     },
     "Humanizer.Core/2.14.1": {
@@ -11611,6 +11648,7 @@
   },
   "projectFileDependencyGroups": {
     "net7.0": [
+      "CsvHelper >= 30.0.1",
       "IdentityServer4.AccessTokenValidation >= 3.0.1",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 7.0.5",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 7.0.4",
@@ -11631,11 +11669,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Harshleen\\2ndSem\\Comp584\\backend\\5-7\\new\\COMP584-Assignment1-server\\WebAPI.csproj",
+      "projectUniqueName": "C:\\Harshleen\\2ndSem\\Comp584\\backend\\5-13\\latest\\COMP584-Assignment1-server\\WebAPI.csproj",
       "projectName": "WebAPI",
-      "projectPath": "C:\\Harshleen\\2ndSem\\Comp584\\backend\\5-7\\new\\COMP584-Assignment1-server\\WebAPI.csproj",
+      "projectPath": "C:\\Harshleen\\2ndSem\\Comp584\\backend\\5-13\\latest\\COMP584-Assignment1-server\\WebAPI.csproj",
       "packagesPath": "C:\\Users\\hs844760\\.nuget\\packages\\",
-      "outputPath": "C:\\Harshleen\\2ndSem\\Comp584\\backend\\5-7\\new\\COMP584-Assignment1-server\\obj\\",
+      "outputPath": "C:\\Harshleen\\2ndSem\\Comp584\\backend\\5-13\\latest\\COMP584-Assignment1-server\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -11669,6 +11707,10 @@
       "net7.0": {
         "targetAlias": "net7.0",
         "dependencies": {
+          "CsvHelper": {
+            "target": "Package",
+            "version": "[30.0.1, )"
+          },
           "IdentityServer4.AccessTokenValidation": {
             "target": "Package",
             "version": "[3.0.1, )"

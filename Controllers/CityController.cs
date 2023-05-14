@@ -18,6 +18,7 @@ namespace WebAPI.Controllers
 
         public DataContext Dc { get; }
 
+
         //GET method: api/city
         [HttpGet]
         [Authorize]
