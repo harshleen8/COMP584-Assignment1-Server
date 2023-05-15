@@ -1,6 +1,7 @@
 ﻿    using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using WebAPI.Models;
 
 namespace WebAPI.Data
@@ -31,6 +32,18 @@ namespace WebAPI.Data
             IConfigurationRoot configuration = builder.Build();
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("Default"));
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Property>(entity =>
+            {
+                entity.Property(e => e.PropertyTypeId).IsFixedLength();
+                entity.Property(e => e.FurnishingTypeId).IsFixedLength();
+            });
+        }
+
+
     }
 
 }

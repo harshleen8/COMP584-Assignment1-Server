@@ -30,10 +30,11 @@ namespace WebAPI.Controllers
 
         //Post method: api/city/add?cityname=Miami
         [HttpPost("add")]
-        public async Task<IActionResult> AddCity(string cityName)
+        public async Task<IActionResult> AddCity(string cityName, string country)
         {
             City city = new City();
             city.Name = cityName;
+            city.Country = country;
             await dc.Cities.AddAsync(city);
             await dc.SaveChangesAsync();
             return Ok(city);

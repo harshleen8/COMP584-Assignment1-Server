@@ -12,8 +12,8 @@ using WebAPI.Data;
 namespace WebAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230508031431_Identity")]
-    partial class Identity
+    [Migration("20230515102624_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -231,7 +231,12 @@ namespace WebAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -253,76 +258,33 @@ namespace WebAPI.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<string>("Address2")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
-
                     b.Property<int>("BHK")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BuiltArea")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CarpetArea")
                         .HasColumnType("int");
 
                     b.Property<int>("CityId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("FurnishingTypeId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("EstPossessionOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("FloorNo")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FurnishingTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Gated")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("MainEntrance")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Maintenance")
-                        .HasColumnType("int");
+                        .HasMaxLength(100)
+                        .HasColumnType("nchar(100)")
+                        .IsFixedLength();
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("PostedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("PostedOn")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
-                    b.Property<int>("PropertyTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("ReadyToMove")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Security")
-                        .HasColumnType("int");
+                    b.Property<string>("PropertyTypeId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nchar(100)")
+                        .IsFixedLength();
 
                     b.Property<int>("SellRent")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalFloors")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -407,7 +369,7 @@ namespace WebAPI.Migrations
             modelBuilder.Entity("WebAPI.Models.Property", b =>
                 {
                     b.HasOne("WebAPI.Models.City", "City")
-                        .WithMany("Properties")
+                        .WithMany("Cities")
                         .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -417,7 +379,7 @@ namespace WebAPI.Migrations
 
             modelBuilder.Entity("WebAPI.Models.City", b =>
                 {
-                    b.Navigation("Properties");
+                    b.Navigation("Cities");
                 });
 #pragma warning restore 612, 618
         }

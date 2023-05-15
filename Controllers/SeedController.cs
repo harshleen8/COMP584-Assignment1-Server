@@ -1,4 +1,5 @@
 ﻿using CsvHelper;
+using CsvHelper.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -28,49 +29,47 @@ namespace WebAPI.Controllers
             _pathName = Path.Combine(environment.ContentRootPath, "Data/properties.csv");
         }
 
+        // POST: api/Seed
         [HttpPost("Properties")]
         public async Task<IActionResult> ImportProperties()
         {
-            try
+            Dictionary<string, Property> propertiesByName = _context.Properties
+                .AsNoTracking().ToDictionary(x => x.Name, StringComparer.OrdinalIgnoreCase);
+
+            CsvConfiguration config = new(CultureInfo.InvariantCulture)
             {
-                using (var reader = new StreamReader(_pathName))
-                using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+                HasHeaderRecord = true,
+                HeaderValidated = null
+            };
+
+            using StreamReader reader = new(_pathName);
+            using CsvReader csv = new(reader, config);
+
+            IEnumerable<PropertiesCsv>? records = csv.GetRecords<PropertiesCsv>();
+            foreach (PropertiesCsv record in records)
+            {
+                if (propertiesByName.ContainsKey(record.Name))
                 {
-                    var records = csv.GetRecords<Property>().ToList();
-
-                    // Update existing records
-                    var existingProperties = _context.Properties.ToList();
-                    foreach (var existingProperty in existingProperties)
-                    {
-                        var updatedProperty = records.FirstOrDefault(p => p.Id == existingProperty.Id);
-                        if (updatedProperty != null)
-                        {
-                            _context.Entry(existingProperty).CurrentValues.SetValues(updatedProperty);
-                        }
-                    }
-
-                    var newProperties = records.Where(p => !existingProperties.Any(ep => ep.Id == p.Id)).ToList();
-                    foreach (var property in newProperties)
-                    {
-                        _context.Entry(property).State = EntityState.Modified;
-                        await _context.SaveChangesAsync();
-
-                    }
-                    await _context.SaveChangesAsync();
-
-
-
-
-                    // Save changes to the database
-                    await _context.SaveChangesAsync();
-
-                    return Ok();
+                    continue;
                 }
+
+                Property property = new()
+                {
+                    Name = record.Name,
+                    CityId = record.CityId,
+                    PropertyTypeId = record.PropertyTypeId,
+                    FurnishingTypeId = record.FurnishingTypeId,
+                    Price = record.Price,
+                    BHK = record.BHK,
+                    Address = record.Address
+                };
+                await _context.Properties.AddAsync(property);
+                propertiesByName.Add(record.Name, property);
             }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+
+            await _context.SaveChangesAsync();
+
+            return new JsonResult(propertiesByName.Count);
         }
 
 

@@ -228,7 +228,12 @@ namespace WebAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -250,92 +255,38 @@ namespace WebAPI.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<string>("Address2")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<string>("Age")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("BHK")
                         .HasColumnType("int");
 
-                    b.Property<int>("BuiltArea")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CarpetArea")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CityId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("CityId1")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EstPossessionOn")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("FloorNo")
+                    b.Property<int>("CityId")
                         .HasColumnType("int");
 
                     b.Property<string>("FurnishingTypeId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Gated")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MainEntrance")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Maintenance")
-                        .HasColumnType("int");
+                        .HasMaxLength(100)
+                        .HasColumnType("nchar(100)")
+                        .IsFixedLength();
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("PostedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PostedOn")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
                     b.Property<string>("PropertyTypeId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ReadyToMove")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Security")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nchar(100)")
+                        .IsFixedLength();
 
                     b.Property<int>("SellRent")
                         .HasColumnType("int");
 
-                    b.Property<int>("TotalFloors")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("CityId1");
+                    b.HasIndex("CityId");
 
                     b.ToTable("Properties");
                 });
@@ -414,14 +365,18 @@ namespace WebAPI.Migrations
 
             modelBuilder.Entity("WebAPI.Models.Property", b =>
                 {
-                    b.HasOne("WebAPI.Models.City", null)
-                        .WithMany("Properties")
-                        .HasForeignKey("CityId1");
+                    b.HasOne("WebAPI.Models.City", "City")
+                        .WithMany("Cities")
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("City");
                 });
 
             modelBuilder.Entity("WebAPI.Models.City", b =>
                 {
-                    b.Navigation("Properties");
+                    b.Navigation("Cities");
                 });
 #pragma warning restore 612, 618
         }

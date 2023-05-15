@@ -9,9 +9,10 @@ namespace WebAPI.Models
         public int Id { get; set; }
 
         [StringLength(50)]
-        public string? Name { get; set; }
+        public string Name { get; set; } = null!;
 
+        public string Country { get; set; } = null!;
 
-        public virtual ICollection<Property> Properties { get; set; }
+        public virtual ICollection<Property> Cities { get; } = new List<Property>();
     }
 }
