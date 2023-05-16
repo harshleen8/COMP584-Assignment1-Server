@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using WebAPI.Dtos;
 using WebAPI.Models;
 
 namespace WebAPI.Data
@@ -21,6 +22,8 @@ namespace WebAPI.Data
         public DbSet<Property> Properties { get; set; }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<UserSignUp> UserSignUps { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

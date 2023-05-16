@@ -71,15 +71,28 @@ namespace WebAPI.Controllers
 
 
 
-        //property/add
+        // property/add
         [HttpPost("add")]
-        public async Task<IActionResult> AddProperty(Property property)
+        public async Task<IActionResult> AddProperty(PropertyInputModel inputModel)
         {
+            var property = new Property
+            {
+                SellRent = inputModel.SellRent,
+                Name = inputModel.Name,
+                PropertyTypeId = inputModel.PropertyTypeId,
+                BHK = inputModel.BHK,
+                FurnishingTypeId = inputModel.FurnishingTypeId,
+                Price = inputModel.Price,
+                Address = inputModel.Address,
+                CityId = inputModel.CityId
+            };
+
             dc.Properties.Add(property);
             await dc.SaveChangesAsync();
 
             return CreatedAtAction("GetProperty", new { id = property.Id }, property);
         }
+
 
         // DELETE: api/Properties/3
         [HttpDelete("{id}")]

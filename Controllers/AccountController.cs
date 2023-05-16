@@ -62,35 +62,37 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(LoginRequest loginRequest)
+        public async Task<IActionResult> Register([FromBody] UserSignUp userSignUp)
         {
-            // Check if the user already exists
-            var existingUser = await _userManager.FindByNameAsync(loginRequest.UserName);
+            // Check if the user already exists in UserSignUps table
+            var existingUser = await _context.UserSignUps.FirstOrDefaultAsync(u => u.UserName == userSignUp.UserName);
             if (existingUser != null)
             {
                 return BadRequest(new { Message = "Username already exists." });
             }
 
             // Create a new user object
-            var newUser = new HousingUser
+            var newUser = new UserSignUp
             {
-                UserName = loginRequest.UserName
-                //Email = loginRequest.Email,
-                // Set other user properties here
+                UserName = userSignUp.UserName,
+                Email = userSignUp.Email,
+                Password = userSignUp.Password,
+                Mobile = userSignUp.Mobile
             };
 
-            // Attempt to create the new user
-            var result = await _userManager.CreateAsync(newUser, loginRequest.Password);
-            if (!result.Succeeded)
-            {
-                // Failed to create the user, return the error messages
-                var errors = result.Errors.Select(e => e.Description);
-                return BadRequest(new { Message = "Failed to create user.", Errors = errors });
-            }
+            // Save the user registration details to the UserSignUps table
+            _context.UserSignUps.Add(newUser);
+            await _context.SaveChangesAsync();
 
             // User created successfully
             return Ok(new { Message = "User created successfully." });
         }
+
+
+
+
+
+
 
         [HttpPost("change-password")]
         public async Task<IActionResult> ChangePassword(ChangePasswordRequest changePasswordRequest)
