@@ -41,6 +41,13 @@ namespace WebAPI.Data
                 entity.Property(e => e.PropertyTypeId).IsFixedLength();
                 entity.Property(e => e.FurnishingTypeId).IsFixedLength();
             });
+            // Configure the User entity
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.HasKey(u => u.Id);
+                entity.Property(u => u.Username).IsRequired();
+                entity.Property(u => u.PasswordHash).IsRequired();
+            });
         }
 
 

@@ -3,10 +3,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using NuGet.Protocol.Plugins;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using WebAPI.Data;
 using WebAPI.Dtos;
+using WebAPI.Models;
 
 namespace WebAPI.Controllers
 {
@@ -17,11 +20,13 @@ namespace WebAPI.Controllers
     {
         private readonly UserManager<HousingUser> _userManager;
         private readonly JwtHandler _jwtHandler;
+        private readonly DataContext _context;
 
-        public AccountController(UserManager<HousingUser> userManager, JwtHandler jwtHandler)
+        public AccountController(UserManager<HousingUser> userManager, JwtHandler jwtHandler, DataContext context)
         {
             _userManager = userManager;
             _jwtHandler = jwtHandler;
+            _context = context;
         }
 
         [HttpPost]
@@ -36,6 +41,15 @@ namespace WebAPI.Controllers
                     Message = "Invalid Username or Password."
                 });
             }
+            var newUser = new User
+            {
+                Username = loginRequest.UserName,
+                PasswordHash = loginRequest.Password
+            };
+
+            // Save the new user to the Users table
+            _context.Users.Add(newUser);
+            await _context.SaveChangesAsync();
 
             JwtSecurityToken secToken = await _jwtHandler.GetTokenAsync(user);
             string? jwt = new JwtSecurityTokenHandler().WriteToken(secToken);
@@ -46,6 +60,130 @@ namespace WebAPI.Controllers
                 Token = jwt
             });
         }
-    }
 
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(LoginRequest loginRequest)
+        {
+            // Check if the user already exists
+            var existingUser = await _userManager.FindByNameAsync(loginRequest.UserName);
+            if (existingUser != null)
+            {
+                return BadRequest(new { Message = "Username already exists." });
+            }
+
+            // Create a new user object
+            var newUser = new HousingUser
+            {
+                UserName = loginRequest.UserName
+                //Email = loginRequest.Email,
+                // Set other user properties here
+            };
+
+            // Attempt to create the new user
+            var result = await _userManager.CreateAsync(newUser, loginRequest.Password);
+            if (!result.Succeeded)
+            {
+                // Failed to create the user, return the error messages
+                var errors = result.Errors.Select(e => e.Description);
+                return BadRequest(new { Message = "Failed to create user.", Errors = errors });
+            }
+
+            // User created successfully
+            return Ok(new { Message = "User created successfully." });
+        }
+
+        [HttpPost("change-password")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordRequest changePasswordRequest)
+        {
+            var user = await _userManager.FindByNameAsync(changePasswordRequest.UserName);
+            if (user == null)
+            {
+                return NotFound(new { Message = "User not found." });
+            }
+
+            // Validate the current password
+            var isValidPassword = await _userManager.CheckPasswordAsync(user, changePasswordRequest.CurrentPassword);
+            if (!isValidPassword)
+            {
+                return BadRequest(new { Message = "Invalid current password." });
+            }
+
+            // Change the user's password
+            var result = await _userManager.ChangePasswordAsync(user, changePasswordRequest.CurrentPassword, changePasswordRequest.NewPassword);
+            if (!result.Succeeded)
+            {
+                // Failed to change the password, return the error messages
+                var errors = result.Errors.Select(e => e.Description);
+                return BadRequest(new { Message = "Failed to change password.", Errors = errors });
+            }
+
+            // Update the user's password hash in the Users table
+            using (var dbContext = new DataContext())
+            {
+                var existingUser = await dbContext.Users.FirstOrDefaultAsync(u => u.Username == user.UserName);
+                if (existingUser != null)
+                {
+                    existingUser.PasswordHash = user.PasswordHash;
+                    await dbContext.SaveChangesAsync();
+                }
+                else
+                {
+                    // Invalid user Id format or user not found in the database
+                    return BadRequest(new { Message = "Invalid user Id or user not found." });
+                }
+            }
+
+            // Password changed successfully
+            return Ok(new { Message = "Password changed successfully." });
+        }
+
+
+
+
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordRequest resetPasswordRequest)
+        {
+            var user = await _userManager.FindByNameAsync(resetPasswordRequest.UserName);
+            if (user == null)
+            {
+                return BadRequest(new { Message = "User not found." });
+            }
+
+            // Generate a password reset token
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            // Reset the user's password
+            var result = await _userManager.ResetPasswordAsync(user, token, resetPasswordRequest.NewPassword);
+            if (!result.Succeeded)
+            {
+                // Failed to reset the password, return the error messages
+                var errors = result.Errors.Select(e => e.Description);
+                return BadRequest(new { Message = "Failed to reset password.", Errors = errors });
+            }
+
+            // Update the user's password hash in the database
+            using (var dbContext = new DataContext())
+            {
+                var existingUser = await dbContext.Users.FirstOrDefaultAsync(u => u.Username == user.UserName);
+                if (existingUser != null)
+                {
+                    existingUser.PasswordHash = user.PasswordHash;
+                    await dbContext.SaveChangesAsync();
+                }
+                else
+                {
+                    // Invalid user Id format or user not found in the database
+                    return BadRequest(new { Message = "Invalid user Id or user not found." });
+                }
+            }
+
+            // Password reset successfully
+            return Ok(new { Message = "Password reset successfully." });
+        }
+
+
+
+
+    }
 }
