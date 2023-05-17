@@ -10,18 +10,18 @@ namespace WebAPI.Models
         public string Name { get; set; }
 
         [StringLength(100)]
-        public string PropertyTypeId { get; set; }
+        public string PType { get; set; }
 
         public int BHK { get; set; }
 
         [StringLength(100)]
-        public string FurnishingTypeId { get; set; }
+        public string FType { get; set; }
 
         public int Price { get; set; }
 
         [StringLength(30)]
         public string Address { get; set; }
 
-        public int CityId { get; set; }
+        public int City { get; set; }
     }
 }

@@ -35,19 +35,19 @@ namespace WebAPI.Controllers
 
         // property/add
         [HttpPost("/api/property/add")]
-        public async Task<IActionResult> AddProperty(PropertyInputModel inputModel)
+        public async Task<IActionResult> AddProperty([FromBody] PropertyInputModel inputModel)
         {
 
             var property = new Property
             {
                 SellRent = inputModel.SellRent,
                 Name = inputModel.Name,
-                PropertyTypeId = inputModel.PropertyTypeId,
+                PropertyTypeId = inputModel.PType,
                 BHK = inputModel.BHK,
-                FurnishingTypeId = inputModel.FurnishingTypeId,
+                FurnishingTypeId = inputModel.FType,
                 Price = inputModel.Price,
                 Address = inputModel.Address,
-                CityId = inputModel.CityId
+                CityId = inputModel.City
             };
 
             dc.Properties.Add(property);
