@@ -53,16 +53,50 @@ namespace WebAPI.Controllers
                     continue;
                 }
 
-                Property property = new()
+                Property property = new Property();
+
+                // Handle null values for Name
+                if (!string.IsNullOrEmpty(record.Name))
                 {
-                    Name = record.Name,
-                    CityId = record.CityId,
-                    PropertyTypeId = record.PropertyTypeId,
-                    FurnishingTypeId = record.FurnishingTypeId,
-                    Price = record.Price,
-                    BHK = record.BHK,
-                    Address = record.Address
-                };
+                    property.Name = record.Name;
+                }
+
+                // Handle null values for CityId
+                if (record.CityId != null)
+                {
+                    property.CityId = record.CityId;
+                }
+
+                // Handle null values for PropertyTypeId
+                if (record.PropertyTypeId != null)
+                {
+                    property.PropertyTypeId = record.PropertyTypeId;
+                }
+
+                // Handle null values for FurnishingTypeId
+                if (record.FurnishingTypeId != null)
+                {
+                    property.FurnishingTypeId = record.FurnishingTypeId;
+                }
+
+                // Handle null values for Price
+                if (record.Price != null)
+                {
+                    property.Price = record.Price;
+                }
+
+                // Handle null values for BHK
+                if (record.BHK != null)
+                {
+                    property.BHK = record.BHK;
+                }
+
+                // Handle null values for Address
+                if (!string.IsNullOrEmpty(record.Address))
+                {
+                    property.Address = record.Address;
+                }
+
                 await _context.Properties.AddAsync(property);
                 propertiesByName.Add(record.Name, property);
             }
