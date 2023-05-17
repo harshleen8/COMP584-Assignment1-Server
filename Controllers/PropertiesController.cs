@@ -33,48 +33,11 @@ namespace WebAPI.Controllers
         }
         private bool PropertyExists(int id) => dc.Properties.Any(e => e.Id == id);
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutProperty(int id, Property updatedProperty)
-        {
-            var existingProperty = await dc.Properties.FindAsync(id);
-
-            if (existingProperty == null)
-            {
-                return NotFound();
-            }
-
-            // Update only the provided fields
-            existingProperty.Name = updatedProperty.Name ?? existingProperty.Name;
-            existingProperty.CityId = updatedProperty.CityId != 0 ? updatedProperty.CityId : existingProperty.CityId;
-            existingProperty.PropertyTypeId = updatedProperty.PropertyTypeId ?? existingProperty.PropertyTypeId;
-            existingProperty.FurnishingTypeId = updatedProperty.FurnishingTypeId ?? existingProperty.FurnishingTypeId;
-
-            dc.Entry(existingProperty).State = EntityState.Modified;
-
-            try
-            {
-                await dc.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PropertyExists(id))
-                {
-                    return NotFound();
-                }
-
-                throw;
-            }
-
-            return NoContent();
-        }
-
-
-
-
         // property/add
-        [HttpPost("add")]
+        [HttpPost("/api/property/add")]
         public async Task<IActionResult> AddProperty(PropertyInputModel inputModel)
         {
+
             var property = new Property
             {
                 SellRent = inputModel.SellRent,
@@ -92,6 +55,7 @@ namespace WebAPI.Controllers
 
             return CreatedAtAction("GetProperty", new { id = property.Id }, property);
         }
+
 
 
         // DELETE: api/Properties/3

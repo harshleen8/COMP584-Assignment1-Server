@@ -13,6 +13,6 @@ namespace WebAPI.Models
 
         public string Country { get; set; } = null!;
 
-        public virtual ICollection<Property> Cities { get; } = new List<Property>();
+        public virtual ICollection<Property> Properties { get; } = new List<Property>();
     }
 }
